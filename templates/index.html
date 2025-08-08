@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MittentisAI :: Blog</title>
+<style>
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f8f9fa; /* Light neutral background */
+    color: #333; /* Dark text for readability */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.row {
+    display: flex;
+    width: 90%; /* Slightly reduced width for better alignment */
+    justify-content: space-between;
+    margin-bottom: 30px; /* Adds spacing between rows */
+    gap: 20px; /* Ensures minimum spacing between the columns */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%; /* Each column takes up 25% of the row */
+    gap: 30px; /* Adds space between all child elements (boxes) */
+}
+
+.box {
+    height: auto; /* Allow height to adjust based on content */
+    background-color: #eaeaea; /* Neutral gray tone */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text to the left */
+    justify-content: center;
+    border-radius: 10px; /* Rounded corners for a modern look */
+    margin-bottom: 20px; /* Ensures spacing between the boxes, reduced from 30px */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    padding: 15px; /* Add padding to create space between text and borders */
+}
+
+.box:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.box:last-child {
+    margin-bottom: 0; /* Removes extra margin for the last box */
+}
+
+.genre {
+    font-family: 'Courier New', Courier, monospace; /* Genre text in Courier New font */
+    font-size: 12px;
+    color: #777; /* Subtle gray color for genre text */
+}
+
+.heading {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 14px;
+}
+
+.image-section {
+    display: flex;
+    flex-direction: column; /* Ensures the image is above the heading */
+    align-items: center;
+    justify-content: center;
+    width: calc(50% - 30px); /* Middle section takes up 50% minus spacing */
+    height: auto; /* Adjusts height based on content */
+    background-color: #ffffff; /* Clean white background */
+    color: #333;
+    text-align: center;
+    border-radius: 10px; /* Matches the rounded corners of other elements */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.image-section img {
+    max-width: 100%; /* Ensures the image fits within the container */
+    max-height: calc(100% - 40px); /* Adjusts height to fit inside the container */
+    border-radius: 8px; /* Matches the rounded corners of the box */
+    object-fit: contain; /* Ensures the image scales properly without distortion */
+}
+
+.image-section:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.spacer {
+    width: 30px; /* Adds spacing between columns and the image section */
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+    .column, .image-section {
+        width: 100%;
+    }
+    .image-section img {
+        max-width: 100%; /* Adjust image size for smaller screens */
+        max-height: auto;
+    }
+    .spacer {
+        display: none; /* Removes spacer in mobile view */
+    }
+    .box {
+        margin-bottom: 20px; /* Increases spacing between boxes on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px; /* Reduces font size for smaller screens */
+    }
+    .row {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Top Row -->
+<div class="row">
+
+<!-- Left Column -->
+<div class="column">
+<a href="/article/1" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Mystery</div>
+<div class="heading" href="/article/1">{{h1}}</div>
+<div class="description">{{d1}}...</div>
+</div>
+</a>
+<a href="/article/2" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Romance</div>
+<div class="heading" href="/article/2">{{h2}}</div>
+<div class="description">{{d2}}...</div>
+</div>
+</a>
+<a href="/article/3" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Fantasy</div>
+<div class="heading" href="/article/3">{{h3}}</div>
+<div class="description">{{d3}}...</div>
+</div>
+</a>
+<a href="/article/4" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Science Fiction</div>
+<div class="heading" href="/article/4">{{h4}}</div>
+<div class="description">{{d4}}...</div>
+</div>
+</a>
+</div>
+
+<!-- Spacer Between Left Column and Image Section -->
+<div class="spacer"></div>
+
+<!-- Image Section -->
+<a href="/article/5" style="text-decoration: none; color: inherit;">
+<div class="image-section">
+<!-- Image -->
+<img src="/generate_image" alt="Thumbnail">
+
+<!-- Genre -->
+<div class="genre">Horror</div>
+
+<!-- Heading -->
+<a href="/article/5" style="text-decoration: none; color: inherit;">
+<h2>{{h5}}</h2>
+</a>
+
+<!-- Description -->
+<p>{{d5}}</p>
+</div>
+</a>
+
+<!-- Spacer Between Image Section and Right Column -->
+<div class="spacer"></div>
+
+<!-- Right Column -->
+<div class="column">
+<a href="/article/6" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Historical Fiction</div>
+<div class="heading" href="/article/6">{{h6}}</div>
+<div class="description">{{d6}}...</div>
+</div>
+</a>
+<a href="/article/7" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Dystopian</div>
+<div class="heading" href="/article/7">{{h7}}</div>
+<div class="description">{{d7}}...</div>
+</div>
+</a>
+<a href="/article/8" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Shakespeare</div>
+<div class="heading" href="/article/8">{{h8}}</div>
+<div class="description">{{d8}}...</div>
+</div>
+</a>
+<a href="/article/9" style="text-decoration: none; color: inherit;">
+<div class="box">
+<div class="genre">Flash Fiction</div>
+<div class="heading" href="/article/9">{{h9}}</div>
+<div class="description">{{d9}}...</div>
+</div>
+</a>
+</div>
+
+</div>
+
+</body>
+</html>

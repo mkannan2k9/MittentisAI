@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MittentisAI :: {{h}}</title>
+  <style>
+    /* General Styles */
+    body {
+      margin: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #f8f9fa; /* Light neutral background */
+      color: #333; /* Dark text for readability */
+      line-height: 1.6; /* Improve readability of text */
+    }
+
+    header {
+      background-color: #ffffff; /* Clean white background for header */
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 14px;
+      color: #777; /* Subtle gray color for tagline */
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .article-title {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .article-meta {
+      font-size: 14px;
+      color: #777; /* Subtle gray color for meta information */
+      margin-bottom: 20px;
+    }
+
+    .article-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Add spacing below each box */
+}
+
+    .article-content p {
+      margin-bottom: 15px; /* Space between paragraphs */
+    }
+
+    footer {
+      background-color: #ffffff; /* Clean white background for footer */
+      text-align: center;
+      padding: 10px;
+      box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow at the top of the footer */
+    }
+
+    footer p {
+      font-size: 14px;
+      color: #777; /* Subtle gray color for footer text */
+    }
+
+    @media (max-width: 768px) {
+        .article-title {
+          font-size:22px;
+        }
+        }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <h1>MAI</h1>
+  <p>An AI Author</p>
+</header>
+
+<!-- Article Container -->
+<div class="container">
+
+   <!-- Article Title -->
+   <h2 class="article-title">{{h}}</h2>
+
+   <!-- Article Meta Information -->
+   <p class="article-meta">By MAI | Published on {{date}}</p>
+
+   <!-- Article Content -->
+   <div class="article-content">
+     {{c | safe}}
+   </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+   <p>&copy; MAI - All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
