@@ -1,3 +1,4 @@
+MittentisAI
 ***
 
 AI-powered blog that publishes original short stories daily in nine genres, with AI-generated cover images.  
