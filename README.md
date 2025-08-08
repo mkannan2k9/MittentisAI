@@ -25,7 +25,6 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 - Each daily "Horror" story generates an AI illustration as a blog cover image (landscape, max 512x512).
 - All web pages are rendered using Jinja2 templates (templates folder).
 - Uses Google Gemini API for story, title, and image generation.
-- Optionally, can convert stories to audio using gTTS.
 
 ***
 
