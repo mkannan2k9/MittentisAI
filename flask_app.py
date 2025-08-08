@@ -174,7 +174,7 @@ def mitt():
 
     datee = str(x.strftime("%Y") + "/" + x.strftime("%m") + "/" + x.strftime("%d"))
 
-    client = genai.Client(api_key="AIzaSyAv5Ww7Izq3xpxJu4NXL3p4M-4vcicij6I")
+    client = genai.Client(api_key="API_KEY")
     def send_ai_req(client, short_story, genre):
         prompt = """You are an exceptional short story writer with mastery in the genre of """+genre+""". Your stories captivate readers by seamlessly blending compelling characters, vivid settings, and thought-provoking themes. Below is one of your short stories (the given short story may not be necessary to be of the same genre you are going to write ("""+genre+"""):
         """+short_story+"""
