@@ -1,359 +1,282 @@
-from flask import *
-from google import genai
-from google.genai import types
-from PIL import Image
-from io import BytesIO
 import os
+import time
+import datetime
+import markdown
 import requests
+from io import BytesIO
+from flask import Flask, request, render_template, abort, send_file
+from PIL import Image
 from gtts import gTTS
 from google import genai
-import time
-import markdown
-import datetime
+from google.genai import types
+import json
+
+GOOGLE_API_KEY = "GOOGLE_API_KEY"
+PODBEAN_CLIENT_ID = "PODBEAN_CLIENT_ID"
+PODBEAN_CLIENT_SECRET = "PODBEAN_CLIENT_SECRET"
+
+TEXT_MODEL = "gemini-2.5-flash-lite"
+IMAGE_MODEL = "imagen-3.0-generate-002"
 
 app = Flask(__name__)
+client = genai.Client(api_key=GOOGLE_API_KEY)
 
 class DataStore:
-    """Class to store data in static variables."""
+    """Simple in-memory storage. Note: Data is lost if the server restarts."""
     data = {}
 
 @app.route('/upload/<key>', methods=['POST'])
 def upload(key):
-    if key == "hello":
-        client = genai.Client(api_key='API_KEY')
-        print("Key is hello")
-        # Extract data from the JSON request
-        h1 = request.get_json().get('h1')
-        c1 = request.get_json().get('c1')
-        h2 = request.get_json().get('h2')
-        c2 = request.get_json().get('c2')
-        h3 = request.get_json().get('h3')
-        c3 = request.get_json().get('c3')
-        h4 = request.get_json().get('h4')
-        c4 = request.get_json().get('c4')
-        h5 = request.get_json().get('h5')
-        c5 = request.get_json().get('c5')
-        h6 = request.get_json().get('h6')
-        c6 = request.get_json().get('c6')
-        h7 = request.get_json().get('h7')
-        c7 = request.get_json().get('c7')
-        h8 = request.get_json().get('h8')
-        c8 = request.get_json().get('c8')
-        h9 = request.get_json().get('h9')
-        c9 = request.get_json().get('c9')
-        date = request.get_json().get('date')
+    if key != "hello":
+        return "Bad API key", 403
 
-        # Store the data in the DataStore class
-        DataStore.data = {
-            "h1": h1, "c1": c1,
-            "h2": h2, "c2": c2,
-            "h3": h3, "c3": c3,
-            "h4": h4, "c4": c4,
-            "h5": h5, "c5": c5,
-            "h6": h6, "c6": c6,
-            "h7": h7, "c7": c7,
-            "h8": h8, "c8": c8,
-            "h9": h9, "c9": c9,
-            "date": date,
-        }
-        contents = "Generate me an image which is suitable for a short story titled: " + DataStore.data.get("h5","Sample Heading") + ". The size of the image MUST NOT exceed 512x512. The orientation must be landscape (not potrait)."
-        response = client.models.generate_content(
-            model="gemini-2.0-flash-preview-image-generation",
-            contents=contents,
-            config=types.GenerateContentConfig(
-                response_modalities=['Text', 'Image']
-            )
-        )
+    print("Authenticated upload request received.")
+    payload = request.get_json()
 
-        for part in response.candidates[0].content.parts:
-            if part.text is not None:
-                print(part.text)
-            elif part.inline_data is not None:
-                try:
-                    image = Image.open(BytesIO(part.inline_data.data))
-                    # Ensure image is saved in the correct static folder path
-                    static_folder = os.path.join(app.root_path, 'static')
-                    if not os.path.exists(static_folder):
-                        os.makedirs(static_folder)  # Create static folder if it doesn't exist
-                    image.save(os.path.join(static_folder, 'generated_image.png'))  # Save the image to the static folder
-                    print("Image saved successfully")
-                except Exception as e:
-                    print(f"Error saving image: {e}")
-            else:
-                print("No image data found")
-        return "Data saved successfully"
-    return "Bad API key"
+    DataStore.data = {k: payload.get(k) for k in payload if k.startswith(('h', 'c'))}
+    DataStore.data['date'] = payload.get('date')
+
+    # Image Generation
+    headline_for_image = DataStore.data.get("h5", "Abstract Concept")
+    image_prompt = (
+        f"A cinematic, landscape-oriented illustration suitable for a short story titled: '{headline_for_image}'. "
+        "High contrast, evocative lighting, detailed texture."
+    )
+
+    response = client.models.generate_content(
+        model=IMAGE_MODEL,
+        contents=image_prompt,
+        config=types.GenerateContentConfig(response_modalities=['Image'])
+    )
+
+    for part in response.candidates[0].content.parts:
+        if part.inline_data:
+            image = Image.open(BytesIO(part.inline_data.data))
+            image = image.resize((512, 512))
+
+            static_folder = os.path.join(app.root_path, 'static')
+            os.makedirs(static_folder, exist_ok=True)
+            image.save(os.path.join(static_folder, 'generated_image.png'))
+            print("Image generated and saved successfully.")
+            break
+
+    return "Data saved successfully"
 
 @app.route('/')
 def home():
-    heading1 = DataStore.data.get("h1", "Sample heading")
-    content1 = DataStore.data.get("c1", "Sample Description")
-    heading2 = DataStore.data.get("h2", "Sample heading")
-    content2 = DataStore.data.get("c2", "Sample Description")
-    heading3 = DataStore.data.get("h3", "Sample heading")
-    content3 = DataStore.data.get("c3", "Sample Description")
-    heading4 = DataStore.data.get("h4", "Sample heading")
-    content4 = DataStore.data.get("c4", "Sample Description")
-    heading5 = DataStore.data.get("h5", "Sample heading")
-    content5 = DataStore.data.get("c5", "Sample Description")
-    heading6 = DataStore.data.get("h6", "Sample heading")
-    content6 = DataStore.data.get("c6", "Sample Description")
-    heading7 = DataStore.data.get("h7", "Sample heading")
-    content7 = DataStore.data.get("c7", "Sample Description")
-    heading8 = DataStore.data.get("h8", "Sample heading")
-    content8 = DataStore.data.get("c8", "Sample Description")
-    heading9 = DataStore.data.get("h9", "Sample heading")
-    content9 = DataStore.data.get("c9", "Sample Description")
-    return render_template("index.html",
-    h1 = heading1, d1 = content1.replace("<p>","").replace("</p>","")[:100],
-    h2 = heading2, d2 = content2.replace("<p>","").replace("</p>","")[:100],
-    h3 = heading3, d3 = content3.replace("<p>","").replace("</p>","")[:100],
-    h4 = heading4, d4 = content4.replace("<p>","").replace("</p>","")[:100],
-    h5 = heading5, d5 = content5.replace("<p>","").replace("</p>","")[:200],
-    h6 = heading6, d6 = content6.replace("<p>","").replace("</p>","")[:100],
-    h7 = heading7, d7 = content7.replace("<p>","").replace("</p>","")[:100],
-    h8 = heading8, d8 = content8.replace("<p>","").replace("</p>","")[:100],
-    h9 = heading9, d9 = content9.replace("<p>","").replace("</p>","")[:100])
+    template_args = {}
+    for i in range(1, 10):
+        h_key = f"h{i}"
+        c_key = f"c{i}"
 
-@app.route('/article/<number>')
+        heading = DataStore.data.get(h_key, "Sample Heading")
+        content = DataStore.data.get(c_key, "Sample Description")
+
+        clean_content = content.replace("<p>", "").replace("</p>", "")
+
+        template_args[h_key] = heading
+        limit = 200 if i == 5 else 100
+        template_args[f"d{i}"] = clean_content[:limit]
+
+    return render_template("index.html", **template_args)
+
+@app.route('/article/<int:number>')
 def article(number):
-    try:
-        n = int(number)
-    except ValueError:
+    if not (1 <= number <= 9):
         abort(404)
-    if((n <= 0 or n >= 10)):
-        abort(404)
-    heading1 = DataStore.data.get("h1", "Sample heading")
-    content1 = DataStore.data.get("c1", "Sample Description")
-    heading2 = DataStore.data.get("h2", "Sample heading")
-    content2 = DataStore.data.get("c2", "Sample Description")
-    heading3 = DataStore.data.get("h3", "Sample heading")
-    content3 = DataStore.data.get("c3", "Sample Description")
-    heading4 = DataStore.data.get("h4", "Sample heading")
-    content4 = DataStore.data.get("c4", "Sample Description")
-    heading5 = DataStore.data.get("h5", "Sample heading")
-    content5 = DataStore.data.get("c5", "Sample Description")
-    heading6 = DataStore.data.get("h6", "Sample heading")
-    content6 = DataStore.data.get("c6", "Sample Description")
-    heading7 = DataStore.data.get("h7", "Sample heading")
-    content7 = DataStore.data.get("c7", "Sample Description")
-    heading8 = DataStore.data.get("h8", "Sample heading")
-    content8 = DataStore.data.get("c8", "Sample Description")
-    heading9 = DataStore.data.get("h9", "Sample heading")
-    content9 = DataStore.data.get("c9", "Sample Description")
+
+    heading = DataStore.data.get(f"h{number}", "Sample Heading")
+    content = DataStore.data.get(f"c{number}", "Sample Description")
     date = DataStore.data.get("date", "Not given")
-    if(n==1):
-        return render_template("article.html", h=heading1, c=content1, date=date)
-    elif(n==2):
-        return render_template("article.html", h=heading2, c=content2, date=date)
-    elif(n==3):
-        return render_template("article.html", h=heading3, c=content3, date=date)
-    elif(n==4):
-        return render_template("article.html", h=heading4, c=content4, date=date)
-    elif(n==5):
-        return render_template("article.html", h=heading5, c=content5, date=date)
-    elif(n==6):
-        return render_template("article.html", h=heading6, c=content6, date=date)
-    elif(n==7):
-        return render_template("article.html", h=heading7, c=content7, date=date)
-    elif(n==8):
-        return render_template("article.html", h=heading8, c=content8, date=date)
-    elif(n==9):
-        return render_template("article.html", h=heading9, c=content9, date=date)
-    else:
-        return "Invalid input"
+
+    return render_template("article.html", h=heading, c=content, date=date)
 
 @app.route('/generate_image')
 def thumbnail():
-    # Serve the image from the static folder
     return send_file("static/generated_image.png", mimetype='image/png')
 
-@app.route("/trigger/mittentis/")
+#Trigger Functions
+
+def generate_with_retry(model, prompt, retries=3):
+    """Helper to handle API flakiness."""
+    for attempt in range(retries):
+        try:
+            response = client.models.generate_content(model=model, contents=prompt)
+            if response.text:
+                return response.text
+        except Exception as e:
+            print(f"Attempt {attempt+1} failed: {e}")
+            time.sleep(1)
+    return None
+
+def generate_simple(model, prompt):
+    """Helper that makes a direct call. No retries, no catching."""
+    response = client.models.generate_content(model=model, contents=prompt)
+    return response.text
+
+@app.route('/trigger/<SET A TRIGGER>')
+def trigger_podcast():
+    topics_file = os.path.join(os.path.dirname(__file__), 'topicsandsubjects.txt')
+    seen_topics = set()
+
+    if os.path.exists(topics_file):
+        with open(topics_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip().lower().startswith("Topic:"):
+                    t = line.partition(":")[2].strip().lower()
+                    seen_topics.add(t)
+
+    topic = None
+    subject = None
+
+    for attempt in range(5):
+        print(f"Generating topic... (Attempt {attempt + 1})")
+
+        topic_prompt = f"""
+        Generate a unique educational topic and subject.
+        Output strictly in JSON format like this:
+        {{"topic": "The French Revolution", "subject": "History"}}
+        """
+
+        response = client.models.generate_content(
+            model=TEXT_MODEL,
+            contents=topic_prompt,
+            config=types.GenerateContentConfig(
+                temperature=1.0,
+                response_mime_type='application/json'  # <--- MAGIC FIX
+            )
+        )
+
+        data = json.loads(response.text)
+        temp_topic = data.get("topic")
+        temp_subject = data.get("subject")
+
+        if temp_topic and temp_subject:
+            if temp_topic.lower() not in seen_topics:
+                topic = temp_topic
+                subject = temp_subject
+
+               with open(topics_file, "a", encoding="utf-8") as f:
+                    f.write(f"\n\nTopic: {topic}\nSubject: {subject}")
+                break
+            else:
+                print(f"Duplicate: {temp_topic}")
+        else:
+            print("JSON missing keys")
+
+    if not topic:
+        return "Failed to generate unique topic."
+
+    print(f"Selected Topic: {topic}")
+
+    lesson_prompt = f"""
+    Write a podcast script.
+    Topic: {topic} | Subject: {subject}
+    Style: Storytelling, Grade 6 level, 300 words. Plain text only.
+    """
+    lesson_text = generate_simple(TEXT_MODEL, lesson_prompt)
+
+    clean_text = lesson_text.replace("**", "").replace("##", "")
+    tts_obj = gTTS(text=clean_text, lang='en', slow=False)
+    tts_obj.save("welcome.mp3")
+
+    meta_prompt = f"""
+    Write a title and description.
+    Topic: {topic}
+    Output strictly in JSON format like this:
+    {{"title": "The Title Here", "description": "The description here."}}
+    """
+
+    
+    meta_resp = client.models.generate_content(
+        model=TEXT_MODEL,
+        contents=meta_prompt,
+        config=types.GenerateContentConfig(response_mime_type='application/json')
+    )
+    meta_data = json.loads(meta_resp.text)
+
+    ep_title = meta_data.get("title", f"{topic} Episode")
+    ep_desc = meta_data.get("description", "Listen now.")
+
+    
+    MODE = "PROD"
+    if MODE == "PROD":
+        token_resp = requests.post(
+            "https://api.podbean.com/v1/oauth/token",
+            data={"grant_type": "client_credentials", "client_id": PODBEAN_CLIENT_ID, "client_secret": PODBEAN_CLIENT_SECRET}
+        )
+        access_token = token_resp.json()["access_token"]
+
+        file_size = os.path.getsize("welcome.mp3")
+        auth_resp = requests.get(
+            "https://api.podbean.com/v1/files/uploadAuthorize",
+            params={'access_token': access_token, 'filename': 'welcome.mp3', 'filesize': file_size, 'content_type': 'audio/mpeg'}
+        )
+        auth_data = auth_resp.json()
+
+        with open("welcome.mp3", "rb") as f:
+            requests.put(auth_data["presigned_url"], data=f, headers={'Content-Type': 'audio/mpeg'})
+
+        requests.post(
+            "https://api.podbean.com/v1/episodes",
+            headers={"Authorization": f"Bearer {access_token}"},
+            json={
+                "title": ep_title, "content": ep_desc, "status": "publish", "type": "public", "media_key": auth_data["file_key"]
+            }
+        )
+
+    return "ok"
+
+@app.route("/trigger/<SET A TRIGGER>/")
 def mitt():
-    x = datetime.datetime.now()
+    """Generates 9 stories of different genres and uploads them to the main app."""
+    genres = [
+        "Mystery", "Romance", "Fantasy", "Science Fiction", "Horror",
+        "Historical Fiction", "Dystopian", "Flash Fiction", "Shakespearean"
+    ]
 
-    datee = str(x.strftime("%Y") + "/" + x.strftime("%m") + "/" + x.strftime("%d"))
+    results = {}
+    current_date = datetime.datetime.now().strftime("%Y/%m/%d")
 
-    client = genai.Client(api_key="API_KEY")
-    def send_ai_req(client, short_story, genre):
-        prompt = """You are an exceptional short story writer with mastery in the genre of """+genre+""". Your stories captivate readers by seamlessly blending compelling characters, vivid settings, and thought-provoking themes. Below is one of your short stories (the given short story may not be necessary to be of the same genre you are going to write ("""+genre+"""):
-        """+short_story+"""
-        Your task is to craft another short story in the same genre. Ensure the new story:
-        1. Engages the reader immediately by starting in medias res (in the middle of the action) or with a striking hook.
-        2. Focuses on one central narrative with limited characters and a concise setting, as is typical for short stories.
-        3. Includes literary devices such as imagery, symbolism, foreshadowing, and metaphors to enrich the prose and evoke emotion.
-        4. Explores a theme that resonates universally while remaining true to the genre conventions.
-        5.Ends with impact, whether through resolution, ambiguity, or an unexpected twist that leaves readers reflecting on the story’s meaning.
-        6. Do not give a title to the short story
-        7. If the genre you are going to write is Shakespearean, remember to use Shakespeare's signature words and phrases and DO NOT WRITE IN NORMAL ENGLISH, WRITE MUCH OF IT AS SHAKESPEARE WOULD HAVE WRITTEN
-
-        Output Requirements:
-        1. Write the story in plain text without headings such as introductions, conclusions, or formatting.
-        2. Avoid summarizing or explaining elements of the story; let them unfold naturally within the narrative.
-        3. Maintain originality and creativity while adhering to the genre’s expectations.
-        4. Analyse the given short story's vocabulary and opening and closing. Try to make your short story like the given one.
-        5. The word count must not exceed 1000 words"""
-        response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=prompt
+    for idx, genre in enumerate(genres, start=1):
+        prompt_story = (
+            f"ROLE: You are a master short story writer specializing in {genre}.\n"
+            "TASK: Write a complete, high-quality short story (max 800 words).\n\n"
+            "GUIDELINES:\n"
+            "1. Start in medias res (action-oriented opening).\n"
+            "2. Focus on sensory details (Show, Don't Tell).\n"
+            "3. Limit characters to 2-3 max.\n"
+            "4. NO Introduction text, NO 'Title:' header. Just the story text.\n"
+            "5. End with a resonant, impactful closing line.\n"
         )
-        return(response.text)
 
-    def get_title(client, short_story, genre):
-        prompt = """Give a suitable heading for the below short story which is of genre"""+genre+""". The short story: """+short_story + ". Do not give me choices just give me the title of the short story which will suit the best. Do not add introduction and conclusions to your response such as 'Here is a title: '"""
-        response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=prompt
-        )
-        return(response.text)
+        if genre == "Shakespearean":
+            prompt_story += "6. STYLE: Use Early Modern English (thee/thou), iambic rhythm where possible.\n"
 
-    short_story = """A SAMPLE SHORT STORY"""
+        story_text = generate_with_retry(TEXT_MODEL, prompt_story)
 
+        if not story_text:
+            story_text = "Story generation failed."
 
-    ###########################################MYSTERY###########################################
+        rendered_story = markdown.markdown(story_text)
 
-    content = send_ai_req(client, short_story, "Mystery")
+        prompt_title = f"Generate a short, captivating 3-5 word title for this story. OUTPUT TITLE ONLY:\n\n{story_text[:500]}..."
+        title_text = generate_with_retry(TEXT_MODEL, prompt_title)
+        clean_title = title_text.strip().replace('"', '').replace("Title:", "")
 
-    c1 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
+        results[f"h{idx}"] = clean_title
+        results[f"c{idx}"] = rendered_story
 
-    h1 = get_title(client, content, "Mystery")
+        print(f"Generated {genre}")
+        time.sleep(2)
 
-    print("Done: ")
-    time.sleep(10)
-    ##################################END MYSTERY###########################################
+    results["date"] = current_date
 
+    try:
+        requests.post('https://mittentisai.pythonanywhere.com/upload/<SET A TRIGGER>', json=results)
+    except Exception as e:
+        print(f"Failed to post results to self: {e}")
 
-    ###########################################ROMANCE###########################################
-
-    content = send_ai_req(client, short_story, "Romance")
-
-    c2 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h2 = get_title(client, content, "Romance")
-    print("Done: ")
-    time.sleep(10)
-    ##################################END ROMANCE###########################################
-
-    ###########################################FANTASY###########################################
-    content = send_ai_req(client, short_story, "Fantasy")
-
-    c3 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h3 = get_title(client, content, "Fantasy")
-    print("Done")
-    time.sleep(10)
-    ##################################END FANTASY###########################################
-
-    ##################################SCINCE FICTION###########################################
-
-    content = send_ai_req(client, short_story, "Science Fiction")
-
-    c4 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h4 = get_title(client, content, "Science Fiction")
-    print("Done")
-    time.sleep(10)
-    ##################################END SCINCE FICTION###########################################
-
-    ##################################HORROR###########################################
-    content = send_ai_req(client, short_story, "Horror")
-
-    c5 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h5 = get_title(client, content, "Horror")
-    print("Done")
-    time.sleep(10)
-    ##################################END HORROR###########################################
-
-    ##################################HISTORICAL FICTION###########################################
-    content = send_ai_req(client, short_story, "Historical Fiction")
-
-    c6 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h6 = get_title(client, content, "Historical Fiction")
-    print("Done")
-    time.sleep(10)
-    ##################################END HISTORICAL FICTION###########################################
-
-    ##################################DYSTOPIAN###########################################
-
-    content = send_ai_req(client, short_story, "Dystopian")
-
-    c7 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h7 = get_title(client, content, "Dystopian")
-    print("Done")
-    time.sleep(10)
-    ##################################END DYSTOPIAN###########################################
-    ##################################FLASH FICTION###########################################
-    content = send_ai_req(client, short_story, "Flash Fiction")
-
-    c9 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h9 = get_title(client, content, "Flash Fiction")
-    ##################################END FLASH FICTION###########################################
-
-    ##################################SHAKESPEREAN###########################################
-    short_story = """A DEMO SHAKESPEAREAN SHORT STORY"""
-    content = send_ai_req(client, short_story, "Shakespearean")
-
-    c8 = markdown.markdown(content, extensions=[
-        'markdown.extensions.fenced_code',
-        'markdown.extensions.codehilite',
-        'markdown.extensions.attr_list'
-    ])
-
-    h8 = get_title(client, content, "Shakespearean")
-
-    print("Done")
-    time.sleep(10)
-    ##################################END SHAKESPEAREAN###########################################
-
-
-
-    url = 'https://mittentisai.pythonanywhere.com/upload/hello'
-    myobj = {'h1': h1, 'c1': c1,
-    'h2': h2, 'c2': c2,
-    'h3': h3, 'c3': c3,
-    'h4': h4, 'c4': c4,
-    'h5': h5, 'c5': c5,
-    'h6': h6, 'c6': c6,
-    'h7': h7, 'c7': c7,
-    'h8': h8, 'c8': c8,
-    'h9': h9, 'c9': c9,
-    'date': datee,}
-
-    x = requests.post(url, json = myobj)
     return "ok"
 
 if __name__ == '__main__':
