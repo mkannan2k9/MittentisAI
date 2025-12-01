@@ -1,114 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MittentisAI :: {{h}}</title>
-  <style>
-    /* General Styles */
-    body {
-      margin: 0;
-      font-family: 'Roboto', Arial, sans-serif;
-      background-color: #f8f9fa; /* Light neutral background */
-      color: #333; /* Dark text for readability */
-      line-height: 1.6; /* Improve readability of text */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MittentisAi | {{h}}</title>
+    <style>
+        :root {
+            --primary: #2a2a2a;
+            --accent: #6366f1; /* Indigo */
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
 
-    header {
-      background-color: #ffffff; /* Clean white background for header */
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-      padding: 20px;
-      text-align: center;
-    }
+        /* Reset & Basics */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8; /* Increased for reading comfort */
+            font-size: 18px; /* Larger base font for stories */
+        }
 
-    header h1 {
-      font-size: 24px;
-      margin: 0;
-    }
+        /* Typography Imports */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap');
 
-    header p {
-      font-size: 14px;
-      color: #777; /* Subtle gray color for tagline */
-    }
+        h1, h2, h3 { font-family: var(--font-heading); color: var(--primary); }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-      padding: 20px;
-    }
+        /* Layout Utilities */
+        .container { max-width: 800px; margin: 0 auto; padding: 0 20px; } /* Narrower container for reading focus */
 
-    .article-title {
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+        /* HEADER (Matches Homepage) */
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            margin-bottom: 3rem;
+        }
+        .nav-flex {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+        .back-link { font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
+        .back-link:hover { color: var(--accent); }
 
-    .article-meta {
-      font-size: 14px;
-      color: #777; /* Subtle gray color for meta information */
-      margin-bottom: 20px;
-    }
-
-    .article-content {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* Add spacing below each box */
-}
-
-    .article-content p {
-      margin-bottom: 15px; /* Space between paragraphs */
-    }
-
-    footer {
-      background-color: #ffffff; /* Clean white background for footer */
-      text-align: center;
-      padding: 10px;
-      box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow at the top of the footer */
-    }
-
-    footer p {
-      font-size: 14px;
-      color: #777; /* Subtle gray color for footer text */
-    }
-
-    @media (max-width: 768px) {
+        /* ARTICLE HEADER */
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
         .article-title {
-          font-size:22px;
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
         }
+        .article-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
-</style>
+        .meta-separator { color: var(--accent); margin: 0 8px; }
+
+        /* ARTICLE CONTENT */
+        .article-content {
+            background-color: var(--card-bg);
+            padding: 3rem 4rem;
+            border-radius: 1px; /* Slight rounding */
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.03);
+            margin-bottom: 4rem;
+        }
+
+        /* Typography within the story */
+        .article-content p {
+            margin-bottom: 1.5rem;
+            color: #2c2c2c;
+        }
+        /* First letter dropcap effect (optional but classy) */
+        .article-content p:first-of-type::first-letter {
+            float: left;
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            line-height: 0.8;
+            padding-right: 10px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #fff;
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        footer a { color: var(--accent); font-weight: 500; }
+
+        @media (max-width: 768px) {
+            .article-title { font-size: 2.2rem; }
+            .article-content { padding: 2rem 1.5rem; }
+            body { font-size: 17px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <h1>MAI</h1>
-  <p>An AI Author</p>
-</header>
+    <!-- Header -->
+    <header>
+        <div class="nav-flex">
+            <a href="/" class="logo">Mittentis<span>Ai</span>.</a>
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+    </header>
 
-<!-- Article Container -->
-<div class="container">
+    <!-- Article Container -->
+    <main class="container">
 
-   <!-- Article Title -->
-   <h2 class="article-title">{{h}}</h2>
+        <!-- Article Title Section -->
+        <div class="article-header">
+            <h1 class="article-title">{{h}}</h1>
+            <div class="article-meta">
+                By MittentisAi <span class="meta-separator">•</span> {{date}}
+            </div>
+        </div>
 
-   <!-- Article Meta Information -->
-   <p class="article-meta">By MAI | Published on {{date}}</p>
+        <!-- Article Content Box -->
+        <article class="article-content">
+            <!-- The content is safe-loaded (HTML preserved) -->
+            {{c | safe}}
+        </article>
 
-   <!-- Article Content -->
-   <div class="article-content">
-     {{c | safe}}
-   </div>
+    </main>
 
-</div>
-
-<!-- Footer -->
-<footer>
-   <p>&copy; MAI - All Rights Reserved</p>
-</footer>
+    <!-- Footer -->
+    <footer>
+        <p>
+            &copy; 2025 Kannan Murugapandian.
+            <br>
+            <a href="https://github.com/mkannan2k9/MittentisAI/" target="_blank" style="display: inline-block; margin-top: 10px;">
+                View Source on GitHub
+            </a>
+        </p>
+    </footer>
 
 </body>
 </html>
