@@ -1,240 +1,313 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MittentisAI :: Blog</title>
-<style>
-/* General Styles */
-body {
-    margin: 0;
-    font-family: 'Roboto', Arial, sans-serif;
-    background-color: #f8f9fa; /* Light neutral background */
-    color: #333; /* Dark text for readability */
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MittentisAi | The Future of Storytelling</title>
+    <style>
+        :root {
+            --primary: #2a2a2a;
+            --accent: #6366f1; /* Indigo */
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 20px 0;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
 
-.row {
-    display: flex;
-    width: 90%; /* Slightly reduced width for better alignment */
-    justify-content: space-between;
-    margin-bottom: 30px; /* Adds spacing between rows */
-    gap: 20px; /* Ensures minimum spacing between the columns */
-}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700;900&display=swap');
 
-.column {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 25%; /* Each column takes up 25% of the row */
-    gap: 30px; /* Adds space between all child elements (boxes) */
-}
+        h1, h2, h3 { font-family: var(--font-heading); color: var(--primary); }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-.box {
-    height: auto; /* Allow height to adjust based on content */
-    background-color: #eaeaea; /* Neutral gray tone */
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align text to the left */
-    justify-content: center;
-    border-radius: 10px; /* Rounded corners for a modern look */
-    margin-bottom: 20px; /* Ensures spacing between the boxes, reduced from 30px */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
-    padding: 15px; /* Add padding to create space between text and borders */
-}
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
-.box:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-}
+        /* HEADER */
+        header { padding: 2rem 0; border-bottom: 1px solid #eee; background: #fff; }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
 
-.box:last-child {
-    margin-bottom: 0; /* Removes extra margin for the last box */
-}
+        /* HERO SECTION (Story 5 - The one with the image) */
+        .hero {
+            position: relative;
+            margin: 2rem 0 4rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            min-height: 500px;
+            display: flex;
+            align-items: flex-end;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            transition: transform 0.5s;
+        }
+        .hero:hover .hero-bg { transform: scale(1.05); }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 3rem;
+            max-width: 800px;
+        }
+        .hero-tag {
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 1rem; color: #fff; }
+        .hero p { font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.9; }
 
-.genre {
-    font-family: 'Courier New', Courier, monospace; /* Genre text in Courier New font */
-    font-size: 12px;
-    color: #777; /* Subtle gray color for genre text */
-}
+        /* MISSION SECTION */
+        .mission {
+            background: #fff;
+            padding: 4rem;
+            border-radius: 16px;
+            margin-bottom: 4rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .mission h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .mission p {
+            max-width: 700px;
+            margin: 0 auto 1rem auto;
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+        .mission-highlight { color: var(--accent); font-weight: 600; }
 
-.heading {
-    font-size: 16px;
-    font-weight: bold;
-}
+        /* GRID SYSTEM */
+        .stories-header { margin-bottom: 2rem; display: flex; align-items: baseline; justify-content: space-between; }
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        .story-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-color: var(--accent);
+        }
+        .genre-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .genre-badge::before {
+            content: ''; display: inline-block; width: 8px; height: 8px;
+            border-radius: 50%; margin-right: 8px; background-color: var(--accent);
+        }
+        .story-card h3 { font-size: 1.5rem; margin-bottom: 1rem; line-height: 1.3; }
+        .story-excerpt {
+            font-size: 0.95rem; color: var(--text-light); margin-bottom: 1.5rem;
+            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .read-more {
+            font-size: 0.9rem; font-weight: 600; color: var(--accent); display: flex; align-items: center;
+        }
+        .read-more::after { content: '→'; margin-left: 5px; transition: margin 0.2s; }
+        .story-card:hover .read-more::after { margin-left: 10px; }
 
-.description {
-    font-size: 14px;
-}
+        /* CREATOR SECTION */
+        .creator-section {
+            background: #222; color: #fff; padding: 4rem 0; border-radius: 16px 16px 0 0; margin-top: 4rem;
+        }
+        .creator-flex {
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2rem;
+        }
+        .creator-content h2 { color: #fff; margin-bottom: 1rem; }
+        .creator-content p { color: #bbb; max-width: 600px; margin: 0 auto 1.5rem auto; }
 
-.image-section {
-    display: flex;
-    flex-direction: column; /* Ensures the image is above the heading */
-    align-items: center;
-    justify-content: center;
-    width: calc(50% - 30px); /* Middle section takes up 50% minus spacing */
-    height: auto; /* Adjusts height based on content */
-    background-color: #ffffff; /* Clean white background */
-    color: #333;
-    text-align: center;
-    border-radius: 10px; /* Matches the rounded corners of other elements */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
-}
-
-.image-section img {
-    max-width: 100%; /* Ensures the image fits within the container */
-    max-height: calc(100% - 40px); /* Adjusts height to fit inside the container */
-    border-radius: 8px; /* Matches the rounded corners of the box */
-    object-fit: contain; /* Ensures the image scales properly without distortion */
-}
-
-.image-section:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-}
-
-.spacer {
-    width: 30px; /* Adds spacing between columns and the image section */
-}
-
-@media (max-width: 768px) {
-    .row {
-        flex-direction: column;
-        align-items: center;
-    }
-    .column, .image-section {
-        width: 100%;
-    }
-    .image-section img {
-        max-width: 100%; /* Adjust image size for smaller screens */
-        max-height: auto;
-    }
-    .spacer {
-        display: none; /* Removes spacer in mobile view */
-    }
-    .box {
-        margin-bottom: 20px; /* Increases spacing between boxes on smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        font-size: 14px; /* Reduces font size for smaller screens */
-    }
-    .row {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
-</style>
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 4rem; }
+            .creator-flex { flex-direction: row; text-align: left; align-items: flex-start; justify-content: center; }
+            .creator-content p { margin: 0 0 1.5rem 0; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
+    <header>
+        <div class="container nav-flex">
+            <div class="logo">Mittentis<span>Ai</span>.</div>
+            <div class="date-display">Daily Edition</div>
+        </div>
+    </header>
 
-<!-- Top Row -->
-<div class="row">
+    <main class="container">
 
-<!-- Left Column -->
-<div class="column">
-<a href="/article/1" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Mystery</div>
-<div class="heading" href="/article/1">{{h1}}</div>
-<div class="description">{{d1}}...</div>
-</div>
-</a>
-<a href="/article/2" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Romance</div>
-<div class="heading" href="/article/2">{{h2}}</div>
-<div class="description">{{d2}}...</div>
-</div>
-</a>
-<a href="/article/3" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Fantasy</div>
-<div class="heading" href="/article/3">{{h3}}</div>
-<div class="description">{{d3}}...</div>
-</div>
-</a>
-<a href="/article/4" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Science Fiction</div>
-<div class="heading" href="/article/4">{{h4}}</div>
-<div class="description">{{d4}}...</div>
-</div>
-</a>
-</div>
+        <!-- HERO SECTION: Story 5 (Horror) -->
+        <!-- Your Flask code uses 'h5' for the image prompt, so we feature Story 5 here -->
+        <section class="hero">
+            <div class="hero-bg" style="background-image: url('/generate_image');"></div>
+            <div class="hero-content">
+                <span class="hero-tag">Featured • Horror</span>
+                <h1>{{ h5 }}</h1>
+                <p>{{ d5 }}...</p>
+                <a href="/article/5" class="btn">Read Story</a>
+            </div>
+        </section>
 
-<!-- Spacer Between Left Column and Image Section -->
-<div class="spacer"></div>
+        <!-- MISSION SECTION -->
+        <section class="mission">
+            <h2>Stories That Live Forever</h2>
+            <p>
+                MittentisAi is an experiment in <span class="mission-highlight">creative abundance</span>.
+                Every single day, our engines craft 9 unique short stories across 9 different genres.
+            </p>
+            <p>
+                This isn't about replacing the human spark—it's about tending to the flame. By training on literary history,
+                we show that the styles of the past can be optimistic guides for the future.
+            </p>
+        </section>
 
-<!-- Image Section -->
-<a href="/article/5" style="text-decoration: none; color: inherit;">
-<div class="image-section">
-<!-- Image -->
-<img src="/generate_image" alt="Thumbnail">
+        <!-- GRID SECTION: Stories 1-4 and 6-9 -->
+        <div class="stories-header">
+            <h2>Today's Collection</h2>
+            <span style="color: var(--text-light)">More Generated Tales</span>
+        </div>
 
-<!-- Genre -->
-<div class="genre">Horror</div>
+        <div class="stories-grid">
 
-<!-- Heading -->
-<a href="/article/5" style="text-decoration: none; color: inherit;">
-<h2>{{h5}}</h2>
-</a>
+            <!-- Story 1 -->
+            <article class="story-card">
+                <div class="genre-badge">Mystery</div>
+                <h3>{{ h1 }}</h3>
+                <p class="story-excerpt">{{ d1 }}...</p>
+                <a href="/article/1" class="read-more">Read Story</a>
+            </article>
 
-<!-- Description -->
-<p>{{d5}}</p>
-</div>
-</a>
+            <!-- Story 2 -->
+            <article class="story-card">
+                <div class="genre-badge">Romance</div>
+                <h3>{{ h2 }}</h3>
+                <p class="story-excerpt">{{ d2 }}...</p>
+                <a href="/article/2" class="read-more">Read Story</a>
+            </article>
 
-<!-- Spacer Between Image Section and Right Column -->
-<div class="spacer"></div>
+            <!-- Story 3 -->
+            <article class="story-card">
+                <div class="genre-badge">Fantasy</div>
+                <h3>{{ h3 }}</h3>
+                <p class="story-excerpt">{{ d3 }}...</p>
+                <a href="/article/3" class="read-more">Read Story</a>
+            </article>
 
-<!-- Right Column -->
-<div class="column">
-<a href="/article/6" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Historical Fiction</div>
-<div class="heading" href="/article/6">{{h6}}</div>
-<div class="description">{{d6}}...</div>
-</div>
-</a>
-<a href="/article/7" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Dystopian</div>
-<div class="heading" href="/article/7">{{h7}}</div>
-<div class="description">{{d7}}...</div>
-</div>
-</a>
-<a href="/article/8" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Shakespeare</div>
-<div class="heading" href="/article/8">{{h8}}</div>
-<div class="description">{{d8}}...</div>
-</div>
-</a>
-<a href="/article/9" style="text-decoration: none; color: inherit;">
-<div class="box">
-<div class="genre">Flash Fiction</div>
-<div class="heading" href="/article/9">{{h9}}</div>
-<div class="description">{{d9}}...</div>
-</div>
-</a>
-</div>
+            <!-- Story 4 -->
+            <article class="story-card">
+                <div class="genre-badge">Science Fiction</div>
+                <h3>{{ h4 }}</h3>
+                <p class="story-excerpt">{{ d4 }}...</p>
+                <a href="/article/4" class="read-more">Read Story</a>
+            </article>
 
-</div>
+            <!-- Story 6 (Skip 5 as it is the hero) -->
+            <article class="story-card">
+                <div class="genre-badge">Historical Fiction</div>
+                <h3>{{ h6 }}</h3>
+                <p class="story-excerpt">{{ d6 }}...</p>
+                <a href="/article/6" class="read-more">Read Story</a>
+            </article>
+
+            <!-- Story 7 -->
+            <article class="story-card">
+                <div class="genre-badge">Dystopian</div>
+                <h3>{{ h7 }}</h3>
+                <p class="story-excerpt">{{ d7 }}...</p>
+                <a href="/article/7" class="read-more">Read Story</a>
+            </article>
+
+            <!-- Story 8 -->
+            <article class="story-card">
+                <div class="genre-badge">Flash Fiction</div>
+                <h3>{{ h8 }}</h3>
+                <p class="story-excerpt">{{ d8 }}...</p>
+                <a href="/article/8" class="read-more">Read Story</a>
+            </article>
+
+            <!-- Story 9 -->
+            <article class="story-card">
+                <div class="genre-badge">Shakespearean</div>
+                <h3>{{ h9 }}</h3>
+                <p class="story-excerpt">{{ d9 }}...</p>
+                <a href="/article/9" class="read-more">Read Story</a>
+            </article>
+
+        </div>
+
+    </main>
+
+    <!-- CREATOR SECTION -->
+    <div class="creator-section">
+        <div class="container">
+            <div class="creator-flex">
+                <div class="creator-content">
+                    <h2>About the Creator</h2>
+                    <p>
+                        <strong>Kannan Murugapandian</strong>, a student at DPS International School, Singapore, and a passionate technologist dedicated to "Tech for Good". A competitive programmer, he is a Bronze Medalist at the National Olympiad in Informatics (NOI) 2024, a State Topper in the International Informatics Olympiad (iiO) 2024, and a Quarter Finalist in the National STEM Championship (NSTEMC) '25. His projects include DonumAI, an AI-powered teaching assistant, and founding Earth Status, a sustainability-focused organisation. Recognized for his technical proficiency with certifications like the CSARC Grade 2 in Arduino, he is continuing building innovative solutions for real-world challenges.
+                    </p>
+                    <a href="https://sg.linkedin.com/in/mk029" class="btn" style="background: #fff; color: #000;" target="_blank">View LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            &copy; 2025 Kannan Murugapandian.
+            <br>
+            <a href="https://github.com/mkannan2k9/MittentisAI/" target="_blank" style="display: inline-block; margin-top: 10px;">
+                View Source on GitHub
+            </a>
+        </p>
+    </footer>
 
 </body>
 </html>
