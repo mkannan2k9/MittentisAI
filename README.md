@@ -2,7 +2,8 @@
 
 ***
 
-AI-powered blog that publishes original short stories daily in nine genres, with AI-generated cover images.  Available at: https://mittentisai.pythonanywhere.com/
+AI-powered blog that publishes original short stories daily in nine genres, with AI-generated cover images.  
+**Live Demo:** [https://mittentisai.pythonanywhere.com/](https://mittentisai.pythonanywhere.com/)
 
 **Owner:** Kannan Murugapandian  
 **License:** MIT
@@ -11,34 +12,27 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 
 ## Features
 
-- Publishes 9 AI-written short stories everyday, each in a different genre:
-  - Mystery
-  - Romance
-  - Fantasy
-  - Science Fiction
-  - Horror
-  - Historical Fiction
-  - Dystopian
-  - Shakespearean
-  - Flash Fiction
-- Every story is titled by AI and stored for web display.
-- Each daily "Horror" story generates an AI illustration as a blog cover image (landscape, max 512x512).
-- All web pages are rendered using Jinja2 templates (templates folder).
-- Uses Google Gemini API for story, title, and image generation.
+- **Daily Content Generation:** Publishes 9 AI-written short stories every day in distinct genres:
+  - Mystery, Romance, Fantasy, Science Fiction, Horror, Historical Fiction, Dystopian, Shakespearean, and Flash Fiction.
+- **AI-Powered Assets:**
+  - **Stories & Titles:** Generated using Google's **Gemini 2.5 Flash-Lite**.
+  - **Cover Art:** Each daily edition generates a thematic cover illustration using **Gemini 2.5 Flash Image** (Nano Banana).
+- **Automated Workflow:** A single trigger endpoint generates, formats, and publishes all content.
+- **Web Interface:** Clean, responsive reading experience built with Flask and Jinja2.
 
 ***
 
 ## Requirements
 
 - Python 3.8+
-- pip packages:
-  - Flask
-  - google-genai (Google AI SDK)
-  - Pillow
-  - requests
-  - gTTS
-  - markdown
-- Google Gemini API Key (for text and image generation)
+- **Google Gemini API Key** (Required for all generative features)
+- Python Packages:
+  - `Flask`
+  - `google-genai` (Official Google AI SDK)
+  - `Pillow` (Image processing)
+  - `requests`
+  - `gTTS` (Text-to-Speech support)
+  - `markdown`
 
 ***
 
@@ -46,23 +40,37 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/[your-username]/ai-story-blog.git
-   cd ai-story-blog
+   git clone https://github.com/[your-username]/mittentis-ai.git
+   cd mittentis-ai
    ```
-2. **Install Python dependencies:**
+
+2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
-   If `requirements.txt` is not provided, install dependencies manually:
+   *Or manually:*
    ```bash
    pip install Flask google-genai Pillow requests gTTS markdown
    ```
 
-3. **Add your API key:**
-   - Open `flask_app.py`
-   - Replace `'API_KEY'` with your actual Google Gemini API key everywhere it appears.
+3. **Configure your API Key:**
+   Open `blog_generator.py` (or `flask_app.py`) and locate the `GOOGLE_API_KEY` variable.
+   ```python
+   # Replace with your actual key
+   GOOGLE_API_KEY = "AIzaSy..." 
+   ```
+   *(Note: For production, it is recommended to use environment variables).*
 
-4. **Ensure you have a `templates` directory** in your project folder (containing `index.html` and `article.html`).
+4. **Verify Directory Structure:**
+   Ensure your project folder looks like this:
+   ```
+   project/
+   ├── blog_generator.py    # Main application file
+   ├── templates/           
+   │   ├── index.html       # Homepage
+   │   └── article.html     # Story reader
+   └── static/              # Created automatically for images
+   ```
 
 ***
 
@@ -70,37 +78,36 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 
 1. **Run the application:**
    ```bash
-   python flask_app.py
-   ```
-2. **Open your browser and visit:**
-   ```
-   http://localhost:5000/
+   python blog_generator.py
    ```
 
-- Use `/` to view the homepage with all genres.
-- Visit `/article/` (where `` is 1–9) to read the full text in each genre.
-- `GET /generate_image` to get the current generated cover image.
-- Use `/trigger/mittentis/` (GET) endpoint to trigger a new daily set of stories (typically you may call this with a cron job or manually for development/testing).
+2. **Open in Browser:**
+   Go to `http://localhost:5000/`
+
+3. **Generate Content (The Trigger):**
+   To generate a fresh batch of stories and a new cover image, visit the trigger URL in your browser:
+   ```
+   http://localhost:5000/trigger/mittentis/
+   ```
+   *Note: This process takes 3-4 minutes as it generates content sequentially to respect API rate limits.*
 
 ***
 
-## File Structure
+## Endpoints
 
-```
-flask_app.py             # Main Flask app
-templates/
-    index.html           # Homepage template
-    article.html         # Story page template
-static/
-    generated_image.png  # Generated cover image
-```
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/` | GET | Homepage listing all 9 genres and previews. |
+| `/article/<id>` | GET | Read a specific story (ID 1-9). |
+| `/generate_image` | GET | Returns the current AI-generated cover image. |
+| `/trigger/mittentis/` | GET | **Admin only.** Triggers generation of 9 new stories and cover art. |
 
 ***
 
 ## Customization
 
-- To change genres, modify the calls in `/trigger/mittentis/`.
-- To adjust length, prompt, or formatting, edit the prompt strings, markdown settings, or Flask routes as needed.
+- **Models:** The app is configured to use `gemini-2.5-flash-lite` for text. You can modify `TEXT_MODEL` in the main script to use other Gemini variants.
+- **Genres:** Modify the `genres` list in the `mitt()` function to change the types of stories generated.
 
 ***
 
@@ -134,11 +141,8 @@ SOFTWARE.
 
 - [Google Gemini API](https://ai.google.dev/)
 - [Flask](https://flask.palletsprojects.com/)
-- [gTTS: Google Text-to-Speech](https://pypi.org/project/gTTS/)
-- [Pillow](https://pillow.readthedocs.io/)
+- [gTTS](https://pypi.org/project/gTTS/)
 
 ***
 
 **For questions or support, contact Kannan Murugapandian.**
-
-***
