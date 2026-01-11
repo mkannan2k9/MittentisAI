@@ -40,7 +40,7 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/mkannan2k9/mittentis-ai.git
+   git clone https://github.com/mkannan2k9/MittentisAI.git
    cd mittentis-ai
    ```
 
