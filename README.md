@@ -1,6 +1,6 @@
 # MittentisAI
 
-***
+
 
 AI-powered blog that publishes original short stories daily in nine genres, with AI-generated cover images.  
 **Live Demo:** [https://mittentisai.pythonanywhere.com/](https://mittentisai.pythonanywhere.com/)
@@ -8,7 +8,7 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 **Owner:** Kannan Murugapandian  
 **License:** MIT
 
-***
+
 
 ## Features
 
@@ -20,7 +20,7 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 - **Automated Workflow:** A single trigger endpoint generates, formats, and publishes all content.
 - **Web Interface:** Clean, responsive reading experience built with Flask and Jinja2.
 
-***
+
 
 ## Requirements
 
@@ -34,7 +34,7 @@ AI-powered blog that publishes original short stories daily in nine genres, with
   - `gTTS` (Text-to-Speech support)
   - `markdown`
 
-***
+
 
 ## Installation
 
@@ -72,7 +72,7 @@ AI-powered blog that publishes original short stories daily in nine genres, with
    └── static/              # Created automatically for images
    ```
 
-***
+
 
 ## Usage
 
@@ -91,7 +91,7 @@ AI-powered blog that publishes original short stories daily in nine genres, with
    ```
    *Note: This process takes 3-4 minutes as it generates content sequentially to respect API rate limits.*
 
-***
+
 
 ## Endpoints
 
@@ -102,14 +102,14 @@ AI-powered blog that publishes original short stories daily in nine genres, with
 | `/generate_image` | GET | Returns the current AI-generated cover image. |
 | `/trigger/mittentis/` | GET | **Admin only.** Triggers generation of 9 new stories and cover art. |
 
-***
+
 
 ## Customization
 
 - **Models:** The app is configured to use `gemini-2.5-flash-lite` for text. You can modify `TEXT_MODEL` in the main script to use other Gemini variants.
 - **Genres:** Modify the `genres` list in the `mitt()` function to change the types of stories generated.
 
-***
+
 
 ## License
 
@@ -135,7 +135,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-***
+
 
 ## Acknowledgements
 
@@ -143,6 +143,6 @@ SOFTWARE.
 - [Flask](https://flask.palletsprojects.com/)
 - [gTTS](https://pypi.org/project/gTTS/)
 
-***
+
 
 **For questions or support, contact Kannan Murugapandian.**
