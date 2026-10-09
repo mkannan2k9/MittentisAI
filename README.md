@@ -110,6 +110,10 @@ data/                   Created at runtime (stories.json, featured.png)
 
 Issues and pull requests are welcome. For larger changes, please open an issue first to discuss what you would like to change.
 
+## AI Use Declaration
+
+The original code for this project was written by the author. It was later cleaned up, and its comments were added, with the help of AI tools. This README was also written with AI. The author reviewed the project and is responsible for its contents.
+
 ## License
 
 Released under the [MIT License](LICENSE).
